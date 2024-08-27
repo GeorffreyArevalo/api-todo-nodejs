@@ -9,7 +9,7 @@ export class Application {
 
     constructor(){
         dotenv.config();
-        
+        this.port = process.env.PORT;
         this.app = express();
         this.connectionDatabaseApplication();
     }
@@ -20,8 +20,8 @@ export class Application {
     }
 
     start() {
-        this.app.listen( 3000, () => {
-            console.log('Aplicacion de servidor en el puerto 3000!!!');
+        this.app.listen( this.port, () => {
+            console.log(`Aplicacion de servidor en el puerto ${this.port}`);
         });
     }
     
