@@ -9,6 +9,7 @@ import { connectionDatabase } from '../database/connection.database.js';
 import routerAuth from '../routes/auth.routes.js';
 
 import { swaggerDocumentationSpec } from '../documentation/swagger.documentation.js';
+import routerTask from '../routes/task.routes.js';
 
 export class Application {
 
@@ -17,7 +18,8 @@ export class Application {
         dotenv.config();
 
         this.paths = {
-            auth: '/auth'
+            auth: '/auth',
+            task: '/task'
         }
 
         this.port = process.env.PORT;
@@ -41,6 +43,7 @@ export class Application {
 
     defineRouters() {
         this.app.use( this.paths.auth, routerAuth );
+        this.app.use( this.paths.task, routerTask );
     }
 
     start() {

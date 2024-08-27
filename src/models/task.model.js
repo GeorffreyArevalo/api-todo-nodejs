@@ -23,7 +23,10 @@ const SchemaTask = Schema({
 });
 
 SchemaTask.methods.toJSON = function() {
-    const {__v, _id, ...task} = this.toObject();
+    const {__v, _id, user, ...task} = this.toObject();
+    const { _id: userId, __v: _, password, ...userRest } = user;
+    userRest.id = userId;
+    task.user = userRest;
     task.id = _id;
     return task;
 }
