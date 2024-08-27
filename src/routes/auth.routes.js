@@ -2,12 +2,15 @@
 
 import { Router } from "express";
 import { check } from "express-validator";
-import { createUser, login } from "../controllers/auth.controller.js";
+import { createUser, login, regenerateJwt } from "../controllers/auth.controller.js";
 import { existUserByUsername } from "../helpers/validators-db.helpers.js";
+import { validateJwt } from "../middlewares/validate-jwt.middleware.js";
 import { validateFields } from "../middlewares/validators.middleware.js";
 
 
 const router = Router();
+
+router.get('/newsession', validateJwt, regenerateJwt);
 
 router.post('/create', [
     check('name', 'El nombre es obligatorio').notEmpty(),
