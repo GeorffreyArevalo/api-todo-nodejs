@@ -38,7 +38,7 @@ export class Application {
 
     async connectionDatabaseApplication() {
         await connectionDatabase();
-        console.log('Base de datos connectada correctamente.');
+        console.log('Base de datos conectada correctamente.');
     }
 
     defineRouters() {

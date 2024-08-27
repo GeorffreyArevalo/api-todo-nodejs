@@ -233,6 +233,418 @@
                     }
                 }
             }
+        },
+        "/task": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Lista todas las tareas.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer Token de acceso."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Todas las tareas.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "tasks": [
+                                            {
+                                                "id": "string",
+                                                "title": "Realizar tarea.",
+                                                "description": "Descripcion de la tarea",
+                                                "state": "Pending",
+                                                "user": {
+                                                    "username": "georffrey",
+                                                    "name": "Georffrey",
+                                                    "id": "66cbfce4b907ffcfcaba3e7b"
+                                                }
+                                            }
+                                        ],
+                                        "ok": true,
+                                        "msg": "Tareas encotradas correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Acccesos denegado."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Task"],
+                "summary": "Agregar una tarea relacionada al usuario en sesión.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer Token de acceso."
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "title": "Titulo de la tarea",
+                                    "description": "Descripcion de la tarea",
+                                    "state": "Pending"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tarea creada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "task": {
+                                            "id": "string",
+                                            "title": "Realizar tarea.",
+                                            "description": "Descripcion de la tarea",
+                                            "state": "Pending",
+                                            "user": {
+                                                "username": "georffrey",
+                                                "name": "Georffrey",
+                                                "id": "66cbfce4b907ffcfcaba3e7b"
+                                            }
+                                        },
+                                        "ok": true,
+                                        "msg": "Tarea creada correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Acccesos denegado."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/by/user": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Lista todas las tareas del usuario en el token.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer Token de acceso."
+                    },
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Si viene lista las tareas con dicho estado."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tareas del usuario en session o del token.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "tasks": [
+                                            {
+                                                "id": "string",
+                                                "title": "Realizar tarea.",
+                                                "description": "Descripcion de la tarea",
+                                                "state": "Pending",
+                                                "user": {
+                                                    "username": "georffrey",
+                                                    "name": "Georffrey",
+                                                    "id": "66cbfce4b907ffcfcaba3e7b"
+                                                }
+                                            }
+                                        ],
+                                        "ok": true,
+                                        "msg": "Tareas encotradas correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Acccesos denegado."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/{id}": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Lista una tarea por el ID.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer Token de acceso."
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Id de la tarea a consultar."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarea por id.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "task": {
+                                            "id": "string",
+                                            "title": "Realizar tarea.",
+                                            "description": "Descripcion de la tarea",
+                                            "state": "Pending",
+                                            "user": {
+                                                "username": "georffrey",
+                                                "name": "Georffrey",
+                                                "id": "66cbfce4b907ffcfcaba3e7b"
+                                            }
+                                        },
+                                        "ok": true,
+                                        "msg": "Tarea encotrada correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Acccesos denegado."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Task"],
+                "summary": "Modificar una tarea relacionada al usuario en sesión.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer Token de acceso."
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Id de la tarea a modificar."
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "title": "Titulo de la tarea",
+                                    "description": "Descripcion de la tarea",
+                                    "state": "Pending"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tarea modificada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "task": {
+                                            "id": "string",
+                                            "title": "Realizar tarea.",
+                                            "description": "Descripcion de la tarea",
+                                            "state": "Pending",
+                                            "user": {
+                                                "username": "georffrey",
+                                                "name": "Georffrey",
+                                                "id": "66cbfce4b907ffcfcaba3e7b"
+                                            }
+                                        },
+                                        "ok": true,
+                                        "msg": "Tarea modificada correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Acccesos denegado."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Task"],
+                "summary": "Eliminar una tarea relacionada al usuario en sesión.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer Token de acceso."
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Id de la tarea a eliminar."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarea eliminada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "task": {
+                                            "id": "string",
+                                            "title": "Realizar tarea.",
+                                            "description": "Descripcion de la tarea",
+                                            "state": "Pending",
+                                            "user": {
+                                                "username": "georffrey",
+                                                "name": "Georffrey",
+                                                "id": "66cbfce4b907ffcfcaba3e7b"
+                                            }
+                                        },
+                                        "ok": true,
+                                        "msg": "Tarea eliminada correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Acccesos denegado."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
