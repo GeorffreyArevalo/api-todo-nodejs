@@ -22,6 +22,12 @@ const SchemaTask = Schema({
     }
 });
 
+SchemaTask.methods.toJSON = function() {
+    const {__v, _id, ...task} = this.toObject();
+    task.id = _id;
+    return task;
+}
+
 
 export const Task = model('Task', SchemaTask);
 
