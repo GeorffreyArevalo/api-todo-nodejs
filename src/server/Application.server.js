@@ -3,8 +3,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 
+import swaggerUI from 'swagger-ui-express';
+
 import { connectionDatabase } from '../database/connection.database.js';
 import routerAuth from '../routes/auth.routes.js';
+
+import { swaggerDocumentationSpec } from '../documentation/swagger.documentation.js';
 
 export class Application {
 
@@ -27,6 +31,7 @@ export class Application {
         this.app.use(cors());
         this.app.use(express.json());
         this.app.use( express.static('src/public') );
+        this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup( swaggerDocumentationSpec ));
     }
 
     async connectionDatabaseApplication() {

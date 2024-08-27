@@ -1,0 +1,240 @@
+
+{
+
+    "openapi": "3.0.0",
+    "info": {
+        "title": "TODO API",
+        "description": "Docuementación del TODO API.",
+        "version": "1.0.0"
+    },
+    "components": {
+
+        "schemas": {
+            "User": {
+                "type": "object",
+                "required": ["name", "username", "password"],
+                "unique": ["username"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nombre del usuario."
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "Nombre de usuario único."
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Contraseña de acceso, mínimode 8 caracteres."
+                    }
+                },
+                "example": {
+                    "name": "Georffrey",
+                    "username": "georffrey",
+                    "password": "pass12345"
+                }
+
+            },
+            "Task": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Titulo de la tarea"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Descripción de la tarea"
+                    },
+                    "state": {
+                        "type": "string",
+                        "description": "Estado de la tarea. Por defecto es Pendinf"
+                    },
+                    "user": {
+                        "type": "object",
+                        "description": "Usuario al que pertenece la tarea.",
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "example": {
+                    "title": "Realizar tarea.",
+                    "description": "Descripcion de la tarea",
+                    "state": "Pending"
+                }
+            }
+        }
+    },
+    "paths": {
+
+        "/auth/create": {
+
+            "post": {
+
+                "tags": ["Auth"], 
+                "summary": "Crea un usuario",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Indica que el Usuario fue creado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "user": {
+                                            "username": "georffrey",
+                                            "name": "Georffrey",
+                                            "id": "66ce01666ba08bf5cb50b2f4"
+                                        },
+                                        "token": "access-token",
+                                        "ok": true,
+                                        "msg": "Usuario creado correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Petición incorrecta",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "El nombre de usuario ya existe."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+        },
+        "/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Iniciar sesión.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "username": "georffrey",
+                                    "password": "pass1234"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sesión iniciada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "user": {
+                                            "username": "georffrey",
+                                            "name": "Georffrey",
+                                            "id": "66cbfce4b907ffcfcaba3e7b"
+                                        },
+                                        "token": "access-token",
+                                        "ok": true,
+                                        "msg": "Ha iniciado sesión correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Credenciales no válidas."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/newsession": {
+            "get": {
+                "tags": ["Auth"],
+                "summary": "Regenerar un nuevo token de acceso.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer Token de acceso."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sesión iniciada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "user": {
+                                            "username": "georffrey",
+                                            "name": "Georffrey",
+                                            "id": "66cbfce4b907ffcfcaba3e7b"
+                                        },
+                                        "token": "access-token",
+                                        "ok": true,
+                                        "msg": "Token regenerado correctamente."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Accesos denegado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "ok": false,
+                                        "msg": "Acccesos denegado."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
