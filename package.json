@@ -5,7 +5,8 @@
   "description": "Api Rest de gestión de actividades.",
   "main": "index.js",
   "scripts": {
-    "start:dev": "node --watch app.js"
+    "start:dev": "node --watch app.js",
+    "start": "node app.js"
   },
   "author": "Georffrey",
   "license": "ISC",
